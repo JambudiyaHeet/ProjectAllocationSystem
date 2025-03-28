@@ -1,0 +1,284 @@
+/* Dashboard.css */
+.dashboard-container {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    width: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Dark background */
+    color: #fff; /* White text */
+  }
+
+  /* Dashboard.css */
+.hero-section {
+    position: relative;
+    width: 100vw;
+    height: calc(100vh - 80px); /* Adjust based on navbar height */
+    background-image: url("https://t4.ftcdn.net/jpg/05/02/87/51/240_F_502875146_nKtFIjpp7nzG83S7XNlebDM8vUGl9zdJ.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 5%;
+    margin-top: 65px; /* Push image down */
+  }
+  
+  
+  
+  /* .hero-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("https://t4.ftcdn.net/jpg/05/02/87/51/240_F_502875146_nKtFIjpp7nzG83S7XNlebDM8vUGl9zdJ.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 5%;
+  } */
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3); /* Optional dark overlay */
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    max-width: 600px;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section {
+    width: 100%;
+    padding: 80px 20px;
+    text-align: center;
+  }
+  
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+  
+  .section-text {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 20px auto;
+  }
+  
+  .about-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .about-text {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .about-image {
+    flex: 1;
+  }
+  
+  .about-image img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  /* About Section */
+.about-section {
+  background: #1e1e1e; /* Darker background */
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.about-section h2 {
+  font-size: 2.5rem;
+  color: #ffffff; /* White text */
+  margin-bottom: 20px;
+}
+
+/* About Container */
+.about-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.about-text {
+  flex: 1;
+  text-align: left;
+}
+
+.about-image {
+  flex: 1;
+}
+
+.about-image img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* About Cards */
+.about-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.about-card {
+  background: #232323; /* Darker Card */
+  padding: 20px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.about-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.4);
+}
+
+.about-card h3 {
+  color: #ff9800; /* Highlighted Title */
+  margin-bottom: 10px;
+}
+
+/* Timeline Section */
+.timeline-section {
+  padding: 60px 10%;
+  text-align: center;
+  background: #232323;
+}
+
+.timeline h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+}
+
+.timeline {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+  position: relative;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: #ffffff;
+}
+
+.timeline-item {
+  /* updated by me for solve overlapping issue */
+  /* for orignal code comment first two line */
+  width: 300px;
+  min-height: 50px;
+  background: #232323;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item h3 {
+  color: #ff9800;
+  margin-bottom: 10px;
+}
+
+/* Statistics Section */
+.stats-section {
+  background: #232323;
+  color: #eee9e9;
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.stat-item h3 {
+  font-size: 2rem;
+  color: #ff9800;
+}
+
+.stat-item p {
+  font-size: 1.2rem;
+  color: #ff9800;
+}
+
+.vertical-divider {
+  width: 3px;
+  height: 166px;
+  background-color: #eee9e9;
+  margin: 0 20px;
+}
+
+
+/* --------------------------------------------------------------------------------- */
+
+.why-choose-section {
+  background: #1e1e1e;
+  padding: 60px 10%;
+  text-align: center;
+}
+
+.choose-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.choose-card {
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.choose-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.4);
+}
+
+.choose-card h3 {
+  color: #ff9800;
+  margin-bottom: 10px;
+}
+
+.choose-card p {
+  font-size: 1rem;
+  color: #ffffff;
+}

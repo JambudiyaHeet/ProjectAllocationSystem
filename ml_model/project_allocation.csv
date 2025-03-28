@@ -1,0 +1,6 @@
+Student_ID,Student_Name,Department,Project_Preference_1,Project_Preference_2,Project_Preference_3,Allocated_Project,Previous_Projects
+101,Alice Johnson,CSE,AI Chatbot,Web Scraper,IoT Smart Home,,"Library App, E-commerce site"
+102,Bob Smith,IT,ML-based Recommender,Cloud Management,Network Security,,Network Monitoring System
+103,Charlie Lee,ECE,IoT Smart Home,Embedded Systems,Robotics Arm,,Automated Traffic Light
+104,David Clark,CSE,Web Scraper,AI Chatbot,Cloud Management,,"Blog Website, Python Scripts"
+105,Emma Brown,IT,Cloud Management,ML-based Recommender,AI Chatbot,,Data Analysis Dashboard
