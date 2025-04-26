@@ -8,6 +8,7 @@ public class ProjectallocationApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectallocationApplication.class, args);
+		System.out.println("Success...");
 	}
 
 }

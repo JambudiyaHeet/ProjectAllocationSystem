@@ -5,13 +5,13 @@
 
 // @Entity
 // public class Student {
-	
+
 // 	@Id
 // 	private int id;
 // 	private String name;
 // 	private int roll_no;
 // 	private double cpi;
-	
+
 // 	public long getId() {
 // 		return id;
 // 	}
@@ -51,7 +51,7 @@
 // 	public void setCpi(float cpi) {
 // 		this.cpi = cpi;
 // 	}
-	
+
 // }
 package com.projectallocation.projectallocation.Entity;
 
@@ -74,11 +74,34 @@ public class Student {
     private String project1;
     private String project2;
     private String project3;
+    private int roll_no;
     private boolean isgroupjoin;
+
+    // Constructors
+    public Student() {
+        super();
+    }
+
+    public Student(String name, String email, String password, double cpi, String project1, String project2,
+            String project3, int rollno, boolean isgroupjoin) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.cpi = cpi;
+        this.project1 = project1;
+        this.project2 = project2;
+        this.project3 = project3;
+        this.roll_no = rollno;
+        this.isgroupjoin = isgroupjoin;
+    }
 
     // Getters and Setters
     public int getId() {
         return id;
+    }
+
+    public int getRollno() {
+        return roll_no;
     }
 
     public void setId(int id) {
@@ -108,7 +131,6 @@ public class Student {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public double getCpi() {
         return cpi;
@@ -142,43 +164,24 @@ public class Student {
         this.project3 = project3;
     }
 
-    // Constructors
-    public Student() {
-		super();
+    public boolean getIsgroupjoin() {
+        return isgroupjoin;
     }
 
-    public Student(String name, String email, String password, int roll_no, double cpi, String project1, String project2, String project3,boolean isgroupjoin) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.cpi = cpi;
-        this.project1 = project1;
-        this.project2 = project2;
-        this.project3 = project3;
-        this.isgroupjoin = isgroupjoin;
-    }
- 
-    public boolean getIsgroupjoin() {
-    	return isgroupjoin;
-    }
-    
     public void setIsgroupjoin(boolean isgroupjoin) {
-    	this.isgroupjoin = isgroupjoin;
+        this.isgroupjoin = isgroupjoin;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", cpi=" + cpi +
-                ", project1='" + project1 + '\'' +
-                ", project2='" + project2 + '\'' +
-                ", project3='" + project3 + '\'' +
-                ", isgroupjoin='" + isgroupjoin + '\'' +
-                '}';
+        return "Student [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", cpi=" + cpi
+                + ", project1=" + project1 + ", project2=" + project2 + ", project3=" + project3 + ", roll_no="
+                + roll_no
+                + ", isgroupjoin=" + isgroupjoin + "]";
+    }
+
+    public void setRollno(int rollno) {
+        this.roll_no = rollno;
     }
 
 }

@@ -13,7 +13,10 @@ public interface RequestDao extends JpaRepository<Request, Integer> {
     // Custom queries can be added here if needed
 	List<Request> findByReceiverId(int receiverId);
 	
+	// @Modifying
+	// @Query("DELETE FROM Request r WHERE r.receiverId = :receiverId")
+	// void deleteByReceiverId(@Param("receiverId") int receiverId);
 	@Modifying
-	@Query("DELETE FROM Request r WHERE r.receiverId = :receiverId")
+	@Query("DELETE FROM Request r WHERE r.receiverId = :receiverId AND r.status != 'ACCEPTED'")
 	void deleteByReceiverId(@Param("receiverId") int receiverId);
 }

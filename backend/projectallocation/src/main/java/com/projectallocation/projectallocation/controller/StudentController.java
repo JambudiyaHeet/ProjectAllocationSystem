@@ -29,13 +29,16 @@ public class StudentController {
 	
 	@CrossOrigin
 	@GetMapping("/student/{studentid}")
-	public Student getStudentById(@PathVariable String studentid) {
-		return this.studentservice.getStudentById(Integer.parseInt(studentid));
+	public Student getStudentById(@PathVariable int studentid) {
+		System.out.println(studentid);
+		// return this.studentservice.getStudentById(Integer.parseInt(studentid));
+		return this.studentservice.getStudentById(studentid);
 	}
 	
 	@CrossOrigin
 	@PostMapping("/student")
 	public Student AddStudent(@RequestBody Student student) {
+		System.out.println(student.toString());
 		return this.studentservice.AddStudent(student);
 	}
 	

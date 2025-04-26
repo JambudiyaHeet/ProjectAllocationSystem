@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import {
   Box,
@@ -27,6 +28,12 @@ const AddProjects = () => {
   const [projectImage, setProjectImage] = useState(null); // State for project image
   const [openSnackbar, setOpenSnackbar] = useState(false); // State for success message
   const [successMessage, setSuccessMessage] = useState(""); // Success message content
+  const [databaseUsed, setDatabaseUsed] = useState("");
+  const [progLang1, setProgLang1] = useState("");
+  const [progLang2, setProgLang2] = useState("");
+  const [progLang3, setProgLang3] = useState("");
+  const [projectLevel, setProjectLevel] = useState("");
+  const [projectDefinition, setProjectDefinition] = useState("");
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -37,15 +44,24 @@ const AddProjects = () => {
       type: projectType,
       maxStudentAllow: maxStudents,
       difficultyLevel: difficultyLevel,
-      deadline: lastDate || "Not specified", // Use the selected date or a default value
+      deadline: lastDate || "Not specified",
       description: projectDescription,
       additionalNotes: additionalNotes,
-      image: projectImage ? URL.createObjectURL(projectImage) : null, // Store image URL
+      image: projectImage ? URL.createObjectURL(projectImage) : null,
+      definition: projectDefinition,
+      level: projectLevel,
+      progLang1: progLang1,
+      progLang2: progLang2,
+      progLang3: progLang3,
+      databaseUsed: databaseUsed,
     };
 
     try {
       // Send the data to the backend
-      const response = await axios.post("http://localhost:8000/project", newProject);
+      const response = await axios.post(
+        "http://localhost:8000/project",
+        newProject
+      );
       console.log("Project saved successfully:", response.data);
 
       // Show success message
@@ -71,7 +87,7 @@ const AddProjects = () => {
   };
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
-  
+
   //   const formData = new FormData();
   //   formData.append("title", projectTitle);
   //   formData.append("type", projectType);
@@ -83,7 +99,7 @@ const AddProjects = () => {
   //   if (projectImage) {
   //     formData.append("image", projectImage);
   //   }
-  
+
   //   try {
   //     const response = await axios.post("http://localhost:8072/project", formData, {
   //       headers: {
@@ -91,10 +107,10 @@ const AddProjects = () => {
   //       },
   //     });
   //     console.log("Project saved successfully:", response.data);
-  
+
   //     setSuccessMessage(`Project "${projectTitle}" added successfully!`);
   //     setOpenSnackbar(true);
-  
+
   //     // Clear form fields
   //     setProjectTitle("");
   //     setProjectType("");
@@ -112,7 +128,7 @@ const AddProjects = () => {
   // };
 
   // Handle image selection
-  
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -126,15 +142,29 @@ const AddProjects = () => {
   };
 
   return (
-    <Box sx={{ background: "#121212", width: "100vw", minHeight: "100vh", paddingTop: "90px", display: "flex" }}>
+    <Box
+      sx={{
+        background: "#121212",
+        width: "100vw",
+        minHeight: "100vh",
+        paddingTop: "90px",
+        display: "flex",
+      }}
+    >
       <Container maxWidth="md" sx={{ flexGrow: 1, padding: "20px" }}>
         {/* Title */}
-        <Typography variant="h4" sx={{ color: "#ff9800", marginBottom: 2, textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "#ff9800", marginBottom: 2, textAlign: "center" }}
+        >
           Add New Project
         </Typography>
 
         {/* Project Form */}
-        <Paper elevation={3} sx={{ background: "#1e1e1e", padding: "16px", borderRadius: "8px" }}>
+        <Paper
+          elevation={3}
+          sx={{ background: "#1e1e1e", padding: "16px", borderRadius: "8px" }}
+        >
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               {/* Project Title */}
@@ -212,7 +242,11 @@ const AddProjects = () => {
                   label="Maximum Students"
                   type="number"
                   value={maxStudents}
-                  onChange={(e) => setMaxStudents(e.target.value ? parseInt(e.target.value) : "")}
+                  onChange={(e) =>
+                    setMaxStudents(
+                      e.target.value ? parseInt(e.target.value) : ""
+                    )
+                  }
                   placeholder="Enter maximum number of students"
                   sx={{
                     background: "#242424",
@@ -325,7 +359,10 @@ const AddProjects = () => {
                   </Button>
                 </label>
                 {projectImage && (
-                  <Typography variant="body2" sx={{ color: "#bbb", marginTop: 1 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#bbb", marginTop: 1 }}
+                  >
                     Selected: {projectImage.name}
                   </Typography>
                 )}
@@ -341,6 +378,180 @@ const AddProjects = () => {
                   value={projectDescription}
                   onChange={(e) => setProjectDescription(e.target.value)}
                   placeholder="Enter project description"
+                  sx={{
+                    background: "#242424",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      "& fieldset": { borderColor: "#ff9800" },
+                      "&:hover fieldset": { borderColor: "#ffb74d" },
+                      "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#ff9800",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#bbb",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Grid>
+              {/* Database Used */}
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Database Used"
+                  value={databaseUsed}
+                  onChange={(e) => setDatabaseUsed(e.target.value)}
+                  placeholder="e.g., MongoDB, MySQL"
+                  sx={{
+                    background: "#242424",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      "& fieldset": { borderColor: "#ff9800" },
+                      "&:hover fieldset": { borderColor: "#ffb74d" },
+                      "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#ff9800",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#bbb",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Grid>
+              {/* Programming Language 1 */}
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Programming Language 1"
+                  value={progLang1}
+                  onChange={(e) => setProgLang1(e.target.value)}
+                  placeholder="e.g., Java"
+                  sx={{
+                    background: "#242424",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      "& fieldset": { borderColor: "#ff9800" },
+                      "&:hover fieldset": { borderColor: "#ffb74d" },
+                      "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#ff9800",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#bbb",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Grid>
+
+              {/* Programming Language 2 */}
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Programming Language 2"
+                  value={progLang2}
+                  onChange={(e) => setProgLang2(e.target.value)}
+                  placeholder="e.g., Python"
+                  sx={{
+                    background: "#242424",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      "& fieldset": { borderColor: "#ff9800" },
+                      "&:hover fieldset": { borderColor: "#ffb74d" },
+                      "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#ff9800",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#bbb",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Grid>
+
+              {/* Programming Language 3 */}
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Programming Language 3"
+                  value={progLang3}
+                  onChange={(e) => setProgLang3(e.target.value)}
+                  placeholder="e.g., JavaScript"
+                  sx={{
+                    background: "#242424",
+                    borderRadius: "4px",
+                    "& .MuiOutlinedInput-root": {
+                      color: "#fff",
+                      "& fieldset": { borderColor: "#ff9800" },
+                      "&:hover fieldset": { borderColor: "#ffb74d" },
+                      "&.Mui-focused fieldset": { borderColor: "#ff9800" },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#ff9800",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#bbb",
+                      opacity: 1,
+                    },
+                  }}
+                />
+              </Grid>
+              {/* Project Level */}
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel
+                    sx={{
+                      color: "#ff9800",
+                      "&.Mui-focused": {
+                        color: "#ff9800",
+                        zIndex: 1,
+                      },
+                    }}
+                  >
+                    Project Level
+                  </InputLabel>
+                  <Select
+                    value={projectLevel}
+                    onChange={(e) => setProjectLevel(e.target.value)}
+                    sx={{
+                      background: "#242424",
+                      color: "#fff",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#ff9800",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#ffb74d",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#ff9800",
+                      },
+                    }}
+                  >
+                    <MenuItem value="Beginner">Beginner</MenuItem>
+                    <MenuItem value="Intermediate">Intermediate</MenuItem>
+                    <MenuItem value="Advanced">Advanced</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              {/* Project Definition */}
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Project Definition"
+                  value={projectDefinition}
+                  onChange={(e) => setProjectDefinition(e.target.value)}
+                  placeholder="Enter project short definition"
                   sx={{
                     background: "#242424",
                     borderRadius: "4px",
@@ -396,7 +607,12 @@ const AddProjects = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  sx={{ background: "#ff9800", color: "#000", width: "100%", padding: "8px" }}
+                  sx={{
+                    background: "#ff9800",
+                    color: "#000",
+                    width: "100%",
+                    padding: "8px",
+                  }}
                 >
                   Add Project
                 </Button>
@@ -413,7 +629,11 @@ const AddProjects = () => {
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
           {successMessage}
         </Alert>
       </Snackbar>

@@ -5,13 +5,13 @@
 
 // @Entity
 // public class Project {
-	
+
 // 	@Id
 // 	int id;
 // 	String Defination;
 // 	int MaxStudentAllow;
 // 	String deadline;
-	
+
 // 	@Override
 // 	public String toString() {
 // 		return "Project [id=" + id + ", Defination=" + Defination + ", MaxStudentAllow=" + MaxStudentAllow
@@ -63,45 +63,56 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Project {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String title; // New field for project title
-    String type; // New field for project type (e.g., AI-Based, Web, etc.)
-    int maxStudentAllow; // Existing field for maximum students allowed
-    String deadline; // Existing field for deadline
-    String difficultyLevel; // New field for difficulty level (e.g., Easy, Medium, Hard)
-    String description; // New field for project description
-    String additionalNotes; // New field for additional notes
-    String image; // New field for project image URL
+    
+    int id; // Primary Key
+    String title; // Project title
+    String definition; // Project definition (short)
+    int maxStudentAllow; // Maximum students allowed
+    String deadline; // Deadline for the project
+    String image; // Project image URL
+    String level; // Level (maybe same as difficulty_level?)
+    String type; // Project type (e.g., AI-Based, Web, etc.)
+    String additionalNotes; // Additional notes for the project
+    String description; // Full project description
+    String difficultyLevel; // Difficulty level (Easy, Medium, Hard)
+    String progLang1; // Programming language 1
+    String progLang2; // Programming language 2
+    String progLang3; // Programming language 3
+    String databaseUsed; // Database used
+
+    public Project() {
+    }
 
     @Override
     public String toString() {
-        return "Project [id=" + id + ", title=" + title + ", type=" + type +
-                ", maxStudentAllow=" + maxStudentAllow + ", deadline=" + deadline + ", difficultyLevel=" + difficultyLevel +
-                ", description=" + description + ", additionalNotes=" + additionalNotes + ", image=" + image + "]";
+        return "Project [id=" + id + ", title=" + title + ", definition=" + definition + ", maxStudentAllow="
+                + maxStudentAllow + ", deadline=" + deadline + ", image=" + image + ", level=" + level + ", type="
+                + type + ", additionalNotes=" + additionalNotes + ", description=" + description + ", difficultyLevel="
+                + difficultyLevel + ", progLang1=" + progLang1 + ", progLang2=" + progLang2 + ", progLang3=" + progLang3
+                + ", databaseUsed=" + databaseUsed + "]";
     }
 
-    public Project() {
-        super();
-    }
-
-    public Project(int id, String title, String type, int maxStudentAllow, String deadline,
-                   String difficultyLevel, String description, String additionalNotes, String image) {
-        super();
-        this.id = id;
+    public Project(String title, String definition, int maxStudentAllow, String deadline, String image, String level,
+            String type, String additionalNotes, String description, String difficultyLevel, String progLang1,
+            String progLang2, String progLang3, String databaseUsed) {
         this.title = title;
-        this.type = type;
+        this.definition = definition;
         this.maxStudentAllow = maxStudentAllow;
         this.deadline = deadline;
-        this.difficultyLevel = difficultyLevel;
-        this.description = description;
-        this.additionalNotes = additionalNotes;
         this.image = image;
+        this.level = level;
+        this.type = type;
+        this.additionalNotes = additionalNotes;
+        this.description = description;
+        this.difficultyLevel = difficultyLevel;
+        this.progLang1 = progLang1;
+        this.progLang2 = progLang2;
+        this.progLang3 = progLang3;
+        this.databaseUsed = databaseUsed;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -118,20 +129,19 @@ public class Project {
         this.title = title;
     }
 
-    public String getType() {
-        return type;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 
-
-    public int getmaxStudentAllow() {
+    public int getMaxStudentAllow() {
         return maxStudentAllow;
     }
 
-    public void setmaxStudentAllow(int maxStudentAllow) {
+    public void setMaxStudentAllow(int maxStudentAllow) {
         this.maxStudentAllow = maxStudentAllow;
     }
 
@@ -143,20 +153,28 @@ public class Project {
         this.deadline = deadline;
     }
 
-    public String getDifficultyLevel() {
-        return difficultyLevel;
+    public String getImage() {
+        return image;
     }
 
-    public void setDifficultyLevel(String difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getDescription() {
-        return description;
+    public String getLevel() {
+        return level;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAdditionalNotes() {
@@ -167,11 +185,52 @@ public class Project {
         this.additionalNotes = additionalNotes;
     }
 
-    public String getImage() {
-        return image;
+    public String getDescription() {
+        return description;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    public String getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public void setDifficultyLevel(String difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
+
+    public String getProgLang1() {
+        return progLang1;
+    }
+
+    public void setProgLang1(String progLang1) {
+        this.progLang1 = progLang1;
+    }
+
+    public String getProgLang2() {
+        return progLang2;
+    }
+
+    public void setProgLang2(String progLang2) {
+        this.progLang2 = progLang2;
+    }
+
+    public String getProgLang3() {
+        return progLang3;
+    }
+
+    public void setProgLang3(String progLang3) {
+        this.progLang3 = progLang3;
+    }
+
+    public String getDatabaseUsed() {
+        return databaseUsed;
+    }
+
+    public void setDatabaseUsed(String databaseUsed) {
+        this.databaseUsed = databaseUsed;
+    }
+
 }

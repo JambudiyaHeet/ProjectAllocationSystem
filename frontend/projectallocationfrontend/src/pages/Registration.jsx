@@ -495,6 +495,7 @@ const Registration = () => {
     officeHours: "",
     ongoingProjects: "",
     awards: "",
+    rollno:"",
   });
 
   const dispatch = useDispatch();
@@ -525,7 +526,7 @@ const Registration = () => {
         };
 
         // Make a POST request to the backend
-        const response = await axios.post("http://localhost:8000/faculty", facultyData);
+        const response = await axios.post("http://localhost:8072/faculty", facultyData);
 
         // Log the response and navigate to the dashboard
         console.log("Faculty added successfully:", response.data);
@@ -541,9 +542,10 @@ const Registration = () => {
             project1: formData.project1,
             project2: formData.project2,
             project3: formData.project3,
+            rollno:formData.rollno,
           };
 
-          const response = await axios.post("http://localhost:8000/student", studentData);
+          const response = await axios.post("http://localhost:8072/student", studentData);
         // Handle student registration logic here
           console.log("Student registration data:", response.data);
           dispatch(setUser(response.data));
@@ -719,6 +721,27 @@ const Registration = () => {
               {/* Projects Section (Only for Students) */}
               {formData.role === "Student" && (
                 <Grid item xs={12}>
+                  <Grid container spacing={2}>
+                      <Grid item xs={12} sm={6}>
+                        <TextField
+                          fullWidth
+                          label="rollno"
+                          name="rollno"
+                          value={formData.rollno}
+                          onChange={handleChange}
+                          required
+                          sx={{
+                            "& .MuiInputLabel-root": { color: "#bbb" },
+                            "& .MuiOutlinedInput-root": {
+                              "& fieldset": { borderColor: "#444" },
+                              "&:hover fieldset": { borderColor: "#666" },
+                              "&.Mui-focused fieldset": { borderColor: "#1976d2" },
+                            },
+                            "& .MuiInputBase-input": { color: "#fff" },
+                          }}
+                        />
+                      </Grid>
+                  </Grid>
                   <Typography variant="subtitle1" sx={{ mb: 1, mt: 2, color: "#888" }}>
                     Projects
                   </Typography>
