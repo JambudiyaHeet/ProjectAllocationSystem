@@ -65,7 +65,7 @@ import jakarta.persistence.Id;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+
     int id; // Primary Key
     String title; // Project title
     String definition; // Project definition (short)
@@ -81,22 +81,18 @@ public class Project {
     String progLang2; // Programming language 2
     String progLang3; // Programming language 3
     String databaseUsed; // Database used
+    boolean isregistered;
+    String firstPartner;
+    String secondPartner;
+    String mentor;
 
     public Project() {
     }
 
-    @Override
-    public String toString() {
-        return "Project [id=" + id + ", title=" + title + ", definition=" + definition + ", maxStudentAllow="
-                + maxStudentAllow + ", deadline=" + deadline + ", image=" + image + ", level=" + level + ", type="
-                + type + ", additionalNotes=" + additionalNotes + ", description=" + description + ", difficultyLevel="
-                + difficultyLevel + ", progLang1=" + progLang1 + ", progLang2=" + progLang2 + ", progLang3=" + progLang3
-                + ", databaseUsed=" + databaseUsed + "]";
-    }
-
     public Project(String title, String definition, int maxStudentAllow, String deadline, String image, String level,
             String type, String additionalNotes, String description, String difficultyLevel, String progLang1,
-            String progLang2, String progLang3, String databaseUsed) {
+            String progLang2, String progLang3, String databaseUsed, boolean isregistered, String firstPartner,
+            String secondPartner, String mentor) {
         this.title = title;
         this.definition = definition;
         this.maxStudentAllow = maxStudentAllow;
@@ -111,6 +107,10 @@ public class Project {
         this.progLang2 = progLang2;
         this.progLang3 = progLang3;
         this.databaseUsed = databaseUsed;
+        this.isregistered = isregistered;
+        this.firstPartner = firstPartner;
+        this.secondPartner = secondPartner;
+        this.mentor = mentor;
     }
 
     public int getId() {
@@ -231,6 +231,65 @@ public class Project {
 
     public void setDatabaseUsed(String databaseUsed) {
         this.databaseUsed = databaseUsed;
+    }
+
+    public boolean isIsregistered() {
+        return isregistered;
+    }
+
+    public void setIsregistered(boolean isregistered) {
+        this.isregistered = isregistered;
+    }
+
+    public String getFirstPartner() {
+        return firstPartner;
+    }
+
+    public void setFirstPartner(String firstPartner) {
+        this.firstPartner = firstPartner;
+    }
+
+    public String getSecondPartner() {
+        return secondPartner;
+    }
+
+    public void setSecondPartner(String secondPartner) {
+        this.secondPartner = secondPartner;
+    }
+
+    public String getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(String mentor) {
+        this.mentor = mentor;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Project{");
+        sb.append("id=").append(id);
+        sb.append(", title=").append(title);
+        sb.append(", definition=").append(definition);
+        sb.append(", maxStudentAllow=").append(maxStudentAllow);
+        sb.append(", deadline=").append(deadline);
+        sb.append(", image=").append(image);
+        sb.append(", level=").append(level);
+        sb.append(", type=").append(type);
+        sb.append(", additionalNotes=").append(additionalNotes);
+        sb.append(", description=").append(description);
+        sb.append(", difficultyLevel=").append(difficultyLevel);
+        sb.append(", progLang1=").append(progLang1);
+        sb.append(", progLang2=").append(progLang2);
+        sb.append(", progLang3=").append(progLang3);
+        sb.append(", databaseUsed=").append(databaseUsed);
+        sb.append(", isregistered=").append(isregistered);
+        sb.append(", firstPartner=").append(firstPartner);
+        sb.append(", secondPartner=").append(secondPartner);
+        sb.append(", mentor=").append(mentor);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

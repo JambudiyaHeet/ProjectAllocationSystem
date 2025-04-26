@@ -265,14 +265,13 @@ const Projects = () => {
       });
   };
 
-  // const client = new HfInference("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"); // Replace with your API key
   // const client = new HfInference(process.env.REACT_APP_HF_ACCESS_TOKEN); // Replace with your API key
   const handleAskAI = async () => {
     if (!aiMessage.trim()) return;
     
     try {
       setAiResponse("Loading response...");
-      const client = new HfInference("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");
+      const client = new HfInference("");
       
       const chatCompletion = await client.chatCompletion({
         model: "meta-llama/Llama-3.3-70B-Instruct",
@@ -1117,7 +1116,7 @@ export default Projects;
     
 //     try {
 //       setAiResponse("Loading response...");
-//       const client = new HfInference("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");
+//       const client = new HfInference("");
       
 //       const chatCompletion = await client.chatCompletion({
 //         model: "meta-llama/Llama-3.3-70B-Instruct",

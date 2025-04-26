@@ -14,4 +14,6 @@ public interface ProjectService {
 	Project UpdateProject(Project project);
 
 	void DeleteProject(int projectId);
+
+	public Project updateProject(int projectId, Project updatedProject);
 }
