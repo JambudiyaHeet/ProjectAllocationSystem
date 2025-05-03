@@ -104,7 +104,6 @@
 
 // export default Navbar;
 
-
 import React, { useState } from "react";
 import {
   AppBar,
@@ -130,27 +129,59 @@ import nextLogo from "../assets/next-logo.png"; // Import the logo image
 import { useSelector } from "react-redux";
 
 const BASE_NAV_ITEMS = [
-  { segment: "dashboard", title: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { segment: "projects", title: "Projects", icon: <AssignmentIcon />, path: "/projects" },
-  { segment: "students", title: "Students", icon: <SchoolIcon />, path: "/students" },
-  { segment: "faculty", title: "Faculty", icon: <PeopleIcon />, path: "/faculty" },
-  { segment: "reports", title: "Reports", icon: <BarChartIcon />, path: "/reports" },
+  {
+    segment: "dashboard",
+    title: "Dashboard",
+    icon: <DashboardIcon />,
+    path: "/dashboard",
+  },
+  {
+    segment: "projects",
+    title: "Projects",
+    icon: <AssignmentIcon />,
+    path: "/projects",
+  },
+  {
+    segment: "students",
+    title: "Students",
+    icon: <SchoolIcon />,
+    path: "/students",
+  },
+  {
+    segment: "faculty",
+    title: "Faculty",
+    icon: <PeopleIcon />,
+    path: "/faculty",
+  },
+  {
+    segment: "reports",
+    title: "Reports",
+    icon: <BarChartIcon />,
+    path: "/reports",
+  },
   // { segment: "integrations", title: "Integrations", icon: <LayersIcon />, path: "/integrations" },
   // { segment: "addprojects", title: "AddProject", icon: <AddIcon/>, path: "/addprojects" },
 ];
 
 const Navbar = () => {
-
-
   const [active, setActive] = useState("dashboard");
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
 
   const isFaculty = user && user.officeHours;
+  console.log(isFaculty);
 
   const NAV_ITEMS = isFaculty
-    ? [...BASE_NAV_ITEMS, { segment: "addprojects", title: "AddProject", icon: <AddIcon />, path: "/addprojects" }]
+    ? [
+        ...BASE_NAV_ITEMS,
+        {
+          segment: "addprojects",
+          title: "AddProject",
+          icon: <AddIcon />,
+          path: "/addprojects",
+        },
+      ]
     : BASE_NAV_ITEMS;
 
   const handleNavClick = (segment, path) => {
@@ -167,15 +198,24 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: "#1976d2", boxShadow: "none" }}>
+    <AppBar
+      position="fixed"
+      sx={{ backgroundColor: "#1976d2", boxShadow: "none" }}
+    >
       <Container sx={{ width: "100%" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {/* Logo and Text */}
           <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <img
               src={nextLogo} // Use the imported logo
               alt="Next Logo"
-              style={{  height: "40px" }} // Adjust size as needed
+              style={{ height: "40px" }} // Adjust size as needed
             />
             <Typography
               variant="h6"
@@ -213,7 +253,10 @@ const Navbar = () => {
                     bottom: 0,
                     width: active === item.segment ? "80%" : "0",
                     height: "3px",
-                    backgroundColor: active === item.segment ? "#FFD700" : "rgba(255, 255, 255, 0.9)",
+                    backgroundColor:
+                      active === item.segment
+                        ? "#FFD700"
+                        : "rgba(255, 255, 255, 0.9)",
                     transform: "translateX(-50%)",
                     transition: "width 0.2s ease-in-out",
                   },
@@ -231,7 +274,11 @@ const Navbar = () => {
             <IconButton onClick={handleProfileClick} sx={{ color: "white" }}>
               <AccountCircleIcon fontSize="large" />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseProfileMenu}>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseProfileMenu}
+            >
               <MenuItem onClick={handleCloseProfileMenu}>Profile</MenuItem>
               <MenuItem onClick={handleCloseProfileMenu}>Settings</MenuItem>
               <MenuItem onClick={handleCloseProfileMenu}>Logout</MenuItem>

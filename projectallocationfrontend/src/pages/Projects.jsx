@@ -21,7 +21,7 @@ import {
   FormControl,
   InputLabel,
   CircularProgress,
-  Alert
+  Alert,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // For registered projects
 import { HfInference } from "@huggingface/inference";
@@ -85,14 +85,14 @@ const Projects = () => {
   // const [selectedProject, setSelectedProject] = useState(null);
   const [groupMembers, setGroupMembers] = useState({
     member1: { id: "", name: "" },
-    member2: { id: "", name: "" }
+    member2: { id: "", name: "" },
   });
   const [faculties, setFaculties] = useState([]);
   const [selectedMentor, setSelectedMentor] = useState("");
   const [loading, setLoading] = useState({
     projects: false,
     faculties: false,
-    registration: false
+    registration: false,
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -113,10 +113,11 @@ const Projects = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-  
-    setLoading(prev => ({ ...prev, faculties: true }));
-  
-    axios.get("http://localhost:8072/faculty")
+
+    setLoading((prev) => ({ ...prev, faculties: true }));
+
+    axios
+      .get("http://localhost:8072/faculty")
       .then((response) => {
         setFaculties(response.data);
       })
@@ -124,10 +125,9 @@ const Projects = () => {
         console.error("Error fetching faculties:", error);
       })
       .finally(() => {
-        setLoading(prev => ({ ...prev, faculties: false }));
+        setLoading((prev) => ({ ...prev, faculties: false }));
       });
   }, [isAuthenticated]);
-  
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -192,18 +192,23 @@ const Projects = () => {
     }
 
     try {
-      setLoading(prev => ({ ...prev, registration: true }));
-      
+      setLoading((prev) => ({ ...prev, registration: true }));
+
       const registrationData = {
         projectId: selectedProject.id,
-        studentIds: [groupMembers.member1.id || groupMembers.member1.name, 
-                   groupMembers.member2.id || groupMembers.member2.name],
+        studentIds: [
+          groupMembers.member1.id || groupMembers.member1.name,
+          groupMembers.member2.id || groupMembers.member2.name,
+        ],
         mentorId: selectedMentor,
-        registererId: user.id
+        registererId: user.id,
       };
 
-      await axios.post("http://localhost:8072/project/register", registrationData);
-      
+      await axios.post(
+        "http://localhost:8072/project/register",
+        registrationData
+      );
+
       setRegisteredProjects([...registeredProjects, selectedProject.id]);
       setSuccess("Project registered successfully!");
       setTimeout(() => {
@@ -211,13 +216,14 @@ const Projects = () => {
         setSuccess(null);
       }, 1500);
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      setError(
+        err.response?.data?.message || "Registration failed. Please try again."
+      );
       console.error("Registration error:", err);
     } finally {
-      setLoading(prev => ({ ...prev, registration: false }));
+      setLoading((prev) => ({ ...prev, registration: false }));
     }
   };
-
 
   const handleGetRecommendation = () => {
     // console.log("Fetching project recommendations...");
@@ -249,7 +255,13 @@ const Projects = () => {
 
         const recommendedProjects = response.data
           .map((returnedId) =>
-            projects.find((project) => project.id === returnedId)
+            projects.find(
+              (project) =>
+                project.id === returnedId &&
+                project.id != user.project1 &&
+                project.id != user.project2 &&
+                project.id != user.project3
+            )
           )
           .filter(Boolean); // if any id doesn't match, safely ignore
 
@@ -265,27 +277,50 @@ const Projects = () => {
       });
   };
 
-  // const client = new HfInference(process.env.REACT_APP_HF_ACCESS_TOKEN); // Replace with your API key
-  const handleAskAI = async () => {
-    if (!aiMessage.trim()) return;
-    
-    try {
-      setAiResponse("Loading response...");
-      const client = new HfInference("");
-      
-      const chatCompletion = await client.chatCompletion({
-        model: "meta-llama/Llama-3.3-70B-Instruct",
-        messages: [{ role: "user", content: aiMessage }],
-        provider: "together",
-        max_tokens: 500,
-      });
+  // const handleAskAI = async () => {
+  //   if (!aiMessage.trim()) return;
 
-      setAiResponse(chatCompletion.choices[0].message.content);
-    } catch (err) {
-      setAiResponse(`Error: ${err.message}`);
-      console.error("AI Error:", err);
-    }
-  };
+  //   try {
+  //     setAiResponse("Loading response...");
+  //     const client = new HfInference("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");
+
+  //     const chatCompletion = await client.chatCompletion({
+  //       model: "meta-llama/Llama-3.3-70B-Instruct",
+  //       messages: [{ role: "user", content: aiMessage }],
+  //       provider: "together",
+  //       max_tokens: 500,
+  //     });
+
+  //     setAiResponse(chatCompletion.choices[0].message.content);
+  //   } catch (err) {
+  //     setAiResponse(`Error: ${err.message}`);
+  //     console.error("AI Error:", err);
+  //   }
+  // };
+
+  // const handleAskAI = async () => {
+  //   if (!aiMessage.trim()) return;
+
+  //   try {
+  //     setAiResponse("Loading response...");
+  //     console.log("using env...");
+  //     const key = process.env.REACT_APP_HF_ACCESS_TOKEN;
+  //     console.log("API Key:", key); // Add this for debugging
+  //     const client = new HfInference(key);
+
+  //     const chatCompletion = await client.chatCompletion({
+  //       model: "meta-llama/Llama-3.3-70B-Instruct",
+  //       messages: [{ role: "user", content: aiMessage }],
+  //       provider: "together",
+  //       max_tokens: 500,
+  //     });
+
+  //     setAiResponse(chatCompletion.choices[0].message.content);
+  //   } catch (err) {
+  //     setAiResponse(`Error: ${err.message}`);
+  //     console.error("AI Error:", err);
+  //   }
+  // };
 
   const filteredProjects = projects.filter(
     (project) =>
@@ -370,9 +405,10 @@ const Projects = () => {
                           <CardMedia
                             component="img"
                             height="140"
-                            image={project.image}
+                            image={"project.image"}
                             alt={project.title}
                           />
+
                           <CardContent sx={{ flexGrow: 1 }}>
                             <Typography
                               gutterBottom
@@ -511,14 +547,19 @@ const Projects = () => {
 
             {/* Right Panel - Ask AI */}
             <Box sx={{ flex: 1 }}>
-              <Paper sx={{ 
-                background: "#1e1e1e", 
-                padding: "20px", 
-                borderRadius: "8px",
-                position: "sticky",
-                top: "100px"
-              }}>
-                <Typography variant="h6" sx={{ color: "#ff9800", marginBottom: 2 }}>
+              <Paper
+                sx={{
+                  background: "#1e1e1e",
+                  padding: "20px",
+                  borderRadius: "8px",
+                  position: "sticky",
+                  top: "100px",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#ff9800", marginBottom: 2 }}
+                >
                   Ask AI for Help
                 </Typography>
                 <TextField
@@ -548,26 +589,31 @@ const Projects = () => {
                   variant="contained"
                   onClick={handleAskAI}
                   disabled={!aiMessage.trim()}
-                  sx={{ 
-                    background: "#ff9800", 
-                    color: "#000", 
+                  sx={{
+                    background: "#ff9800",
+                    color: "#000",
                     width: "100%",
                     "&:hover": { background: "#e68a00" },
-                    "&:disabled": { background: "#ffcc80" }
+                    "&:disabled": { background: "#ffcc80" },
                   }}
                 >
                   Ask AI
                 </Button>
                 {aiResponse && (
-                  <Box sx={{ 
-                    marginTop: 2, 
-                    padding: "10px", 
-                    background: "#242424", 
-                    borderRadius: "4px",
-                    maxHeight: "300px",
-                    overflowY: "auto"
-                  }}>
-                    <Typography variant="body1" sx={{ color: "#fff", whiteSpace: "pre-wrap" }}>
+                  <Box
+                    sx={{
+                      marginTop: 2,
+                      padding: "10px",
+                      background: "#242424",
+                      borderRadius: "4px",
+                      maxHeight: "300px",
+                      overflowY: "auto",
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#fff", whiteSpace: "pre-wrap" }}
+                    >
                       {aiResponse}
                     </Typography>
                   </Box>
@@ -586,15 +632,24 @@ const Projects = () => {
       </Container>
 
       {/* Registration Modal */}
-      <Dialog open={openModal} onClose={handleModalClose} fullWidth maxWidth="sm">
-        <DialogTitle sx={{ 
-          color: "#ff9800", 
-          background: "#1e1e1e",
-          borderBottom: "1px solid #ff9800"
-        }}>
+      <Dialog
+        open={openModal}
+        onClose={handleModalClose}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle
+          sx={{
+            color: "#ff9800",
+            background: "#1e1e1e",
+            borderBottom: "1px solid #ff9800",
+          }}
+        >
           Register for {selectedProject?.title}
         </DialogTitle>
-        <DialogContent sx={{ background: "#1e1e1e", paddingTop: "20px !important" }}>
+        <DialogContent
+          sx={{ background: "#1e1e1e", paddingTop: "20px !important" }}
+        >
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
@@ -605,49 +660,53 @@ const Projects = () => {
               {success}
             </Alert>
           )}
-          
+
           <TextField
             fullWidth
             label="Group Member 1"
             value={groupMembers.member1.name}
-            onChange={(e) => setGroupMembers(prev => ({
-              ...prev,
-              member1: { ...prev.member1, name: e.target.value }
-            }))}
+            onChange={(e) =>
+              setGroupMembers((prev) => ({
+                ...prev,
+                member1: { ...prev.member1, name: e.target.value },
+              }))
+            }
             disabled={!!groupMembers.member1.id}
-            sx={{ 
+            sx={{
               marginBottom: 2,
               "& .MuiInputBase-input": { color: "#fff" },
               "& .MuiInputLabel-root": { color: "#bbb" },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "#ff9800" },
-                "&.Mui-disabled fieldset": { borderColor: "#666" }
-              }
+                "&.Mui-disabled fieldset": { borderColor: "#666" },
+              },
             }}
           />
-          
+
           <TextField
             fullWidth
             label="Group Member 2"
             value={groupMembers.member2.name}
-            onChange={(e) => setGroupMembers(prev => ({
-              ...prev,
-              member2: { ...prev.member2, name: e.target.value }
-            }))}
+            onChange={(e) =>
+              setGroupMembers((prev) => ({
+                ...prev,
+                member2: { ...prev.member2, name: e.target.value },
+              }))
+            }
             disabled={!!groupMembers.member2.id}
-            sx={{ 
+            sx={{
               marginBottom: 2,
               "& .MuiInputBase-input": { color: "#fff" },
               "& .MuiInputLabel-root": { color: "#bbb" },
               "& .MuiOutlinedInput-root": {
                 "& fieldset": { borderColor: "#ff9800" },
-                "&.Mui-disabled fieldset": { borderColor: "#666" }
-              }
+                "&.Mui-disabled fieldset": { borderColor: "#666" },
+              },
             }}
           />
-          
+
           <FormControl fullWidth sx={{ marginBottom: 2 }}>
-            <InputLabel 
+            <InputLabel
               id="mentor-select-label"
               sx={{ color: "#bbb", "&.Mui-focused": { color: "#ff9800" } }}
             >
@@ -658,12 +717,18 @@ const Projects = () => {
               value={selectedMentor}
               label="Select Mentor"
               onChange={(e) => setSelectedMentor(e.target.value)}
-              sx={{ 
+              sx={{
                 color: "#fff",
-                "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ff9800" },
-                "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#ffb74d" },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: "#ff9800" },
-                "& .MuiSvgIcon-root": { color: "#ff9800" }
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#ff9800",
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#ffb74d",
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: "#ff9800",
+                },
+                "& .MuiSvgIcon-root": { color: "#ff9800" },
               }}
               MenuProps={{
                 PaperProps: {
@@ -671,10 +736,10 @@ const Projects = () => {
                     bgcolor: "#1e1e1e",
                     "& .MuiMenuItem-root": {
                       color: "#fff",
-                      "&:hover": { bgcolor: "#333" }
-                    }
-                  }
-                }
+                      "&:hover": { bgcolor: "#333" },
+                    },
+                  },
+                },
               }}
             >
               {loading.faculties ? (
@@ -694,27 +759,29 @@ const Projects = () => {
           </FormControl>
         </DialogContent>
         <DialogActions sx={{ background: "#1e1e1e", padding: "16px 24px" }}>
-          <Button 
+          <Button
             onClick={handleModalClose}
-            sx={{ 
+            sx={{
               color: "#ff9800",
-              "&:hover": { backgroundColor: "rgba(255, 152, 0, 0.1)" }
+              "&:hover": { backgroundColor: "rgba(255, 152, 0, 0.1)" },
             }}
           >
             Cancel
           </Button>
-          <Button 
+          <Button
             onClick={handleConfirmRegistration}
             disabled={!selectedMentor || loading.registration}
-            sx={{ 
+            sx={{
               color: "#ff9800",
               "&:hover": { backgroundColor: "rgba(255, 152, 0, 0.1)" },
-              "&:disabled": { color: "#666" }
+              "&:disabled": { color: "#666" },
             }}
           >
             {loading.registration ? (
               <CircularProgress size={24} color="inherit" />
-            ) : "Confirm"}
+            ) : (
+              "Confirm"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
@@ -994,7 +1061,7 @@ export default Projects;
 // const Projects = () => {
 //   const user = useSelector((state) => state.user.user);
 //   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  
+
 //   // State variables
 //   const [searchQuery, setSearchQuery] = useState("");
 //   const [projects, setProjects] = useState([]);
@@ -1024,7 +1091,7 @@ export default Projects;
 //     const fetchData = async () => {
 //       try {
 //         setLoading(prev => ({ ...prev, projects: true, faculties: true }));
-        
+
 //         // Fetch projects
 //         const projectsResponse = await axios.get("http://localhost:8072/project");
 //         console.log("project fetched...");
@@ -1086,17 +1153,17 @@ export default Projects;
 
 //     try {
 //       setLoading(prev => ({ ...prev, registration: true }));
-      
+
 //       const registrationData = {
 //         projectId: selectedProject.id,
-//         studentIds: [groupMembers.member1.id || groupMembers.member1.name, 
+//         studentIds: [groupMembers.member1.id || groupMembers.member1.name,
 //                    groupMembers.member2.id || groupMembers.member2.name],
 //         mentorId: selectedMentor,
 //         registererId: user.id
 //       };
 
 //       await axios.post("http://localhost:8072/project/register", registrationData);
-      
+
 //       setRegisteredProjects([...registeredProjects, selectedProject.id]);
 //       setSuccess("Project registered successfully!");
 //       setTimeout(() => {
@@ -1111,26 +1178,26 @@ export default Projects;
 //     }
 //   };
 
-//   const handleAskAI = async () => {
-//     if (!aiMessage.trim()) return;
-    
-//     try {
-//       setAiResponse("Loading response...");
-//       const client = new HfInference("");
-      
-//       const chatCompletion = await client.chatCompletion({
-//         model: "meta-llama/Llama-3.3-70B-Instruct",
-//         messages: [{ role: "user", content: aiMessage }],
-//         provider: "together",
-//         max_tokens: 500,
-//       });
+// const handleAskAI = async () => {
+//   if (!aiMessage.trim()) return;
 
-//       setAiResponse(chatCompletion.choices[0].message.content);
-//     } catch (err) {
-//       setAiResponse(`Error: ${err.message}`);
-//       console.error("AI Error:", err);
-//     }
-//   };
+//   try {
+//     setAiResponse("Loading response...");
+//     const client = new HfInference("");
+
+//     const chatCompletion = await client.chatCompletion({
+//       model: "meta-llama/Llama-3.3-70B-Instruct",
+//       messages: [{ role: "user", content: aiMessage }],
+//       provider: "together",
+//       max_tokens: 500,
+//     });
+
+//     setAiResponse(chatCompletion.choices[0].message.content);
+//   } catch (err) {
+//     setAiResponse(`Error: ${err.message}`);
+//     console.error("AI Error:", err);
+//   }
+// };
 
 //   // Filter projects based on search query
 //   const filteredProjects = projects.filter( (project) =>
@@ -1173,11 +1240,11 @@ export default Projects;
 //                 <Grid container spacing={4}>
 //                   {filteredProjects.map((project) => (
 //                     <Grid item key={project.id} xs={12} sm={6} md={4}>
-//                       <Card sx={{ 
-//                         background: "#1e1e1e", 
-//                         color: "#fff", 
-//                         height: "100%", 
-//                         display: "flex", 
+//                       <Card sx={{
+//                         background: "#1e1e1e",
+//                         color: "#fff",
+//                         height: "100%",
+//                         display: "flex",
 //                         flexDirection: "column",
 //                         transition: "transform 0.3s",
 //                         "&:hover": { transform: "scale(1.02)" }
@@ -1206,9 +1273,9 @@ export default Projects;
 //                           {registeredProjects.includes(project.id) ? (
 //                             <Button
 //                               variant="contained"
-//                               sx={{ 
-//                                 background: "#4CAF50", 
-//                                 color: "white", 
+//                               sx={{
+//                                 background: "#4CAF50",
+//                                 color: "white",
 //                                 gap: "5px",
 //                                 "&:hover": { background: "#3e8e41" }
 //                               }}
@@ -1219,8 +1286,8 @@ export default Projects;
 //                           ) : (
 //                             <Button
 //                               variant="contained"
-//                               sx={{ 
-//                                 background: "#ff9800", 
+//                               sx={{
+//                                 background: "#ff9800",
 //                                 color: "#000",
 //                                 "&:hover": { background: "#e68a00" }
 //                               }}
@@ -1239,9 +1306,9 @@ export default Projects;
 
 //             {/* Right Panel - Ask AI */}
 //             <Box sx={{ flex: 1 }}>
-//               <Paper sx={{ 
-//                 background: "#1e1e1e", 
-//                 padding: "20px", 
+//               <Paper sx={{
+//                 background: "#1e1e1e",
+//                 padding: "20px",
 //                 borderRadius: "8px",
 //                 position: "sticky",
 //                 top: "100px"
@@ -1276,9 +1343,9 @@ export default Projects;
 //                   variant="contained"
 //                   onClick={handleAskAI}
 //                   disabled={!aiMessage.trim()}
-//                   sx={{ 
-//                     background: "#ff9800", 
-//                     color: "#000", 
+//                   sx={{
+//                     background: "#ff9800",
+//                     color: "#000",
 //                     width: "100%",
 //                     "&:hover": { background: "#e68a00" },
 //                     "&:disabled": { background: "#ffcc80" }
@@ -1287,10 +1354,10 @@ export default Projects;
 //                   Ask AI
 //                 </Button>
 //                 {aiResponse && (
-//                   <Box sx={{ 
-//                     marginTop: 2, 
-//                     padding: "10px", 
-//                     background: "#242424", 
+//                   <Box sx={{
+//                     marginTop: 2,
+//                     padding: "10px",
+//                     background: "#242424",
 //                     borderRadius: "4px",
 //                     maxHeight: "300px",
 //                     overflowY: "auto"
@@ -1310,15 +1377,10 @@ export default Projects;
 //         )}
 //       </Container>
 
-
-
-
-
-
 //       {/* Registration Modal */}
 //       <Dialog open={openModal} onClose={handleModalClose} fullWidth maxWidth="sm">
-//         <DialogTitle sx={{ 
-//           color: "#ff9800", 
+//         <DialogTitle sx={{
+//           color: "#ff9800",
 //           background: "#1e1e1e",
 //           borderBottom: "1px solid #ff9800"
 //         }}>
@@ -1335,7 +1397,7 @@ export default Projects;
 //               {success}
 //             </Alert>
 //           )}
-          
+
 //           <TextField
 //             fullWidth
 //             label="Group Member 1"
@@ -1345,7 +1407,7 @@ export default Projects;
 //               member1: { ...prev.member1, name: e.target.value }
 //             }))}
 //             disabled={!!groupMembers.member1.id}
-//             sx={{ 
+//             sx={{
 //               marginBottom: 2,
 //               "& .MuiInputBase-input": { color: "#fff" },
 //               "& .MuiInputLabel-root": { color: "#bbb" },
@@ -1355,7 +1417,7 @@ export default Projects;
 //               }
 //             }}
 //           />
-          
+
 //           <TextField
 //             fullWidth
 //             label="Group Member 2"
@@ -1365,7 +1427,7 @@ export default Projects;
 //               member2: { ...prev.member2, name: e.target.value }
 //             }))}
 //             disabled={!!groupMembers.member2.id}
-//             sx={{ 
+//             sx={{
 //               marginBottom: 2,
 //               "& .MuiInputBase-input": { color: "#fff" },
 //               "& .MuiInputLabel-root": { color: "#bbb" },
@@ -1375,9 +1437,9 @@ export default Projects;
 //               }
 //             }}
 //           />
-          
+
 //           <FormControl fullWidth sx={{ marginBottom: 2 }}>
-//             <InputLabel 
+//             <InputLabel
 //               id="mentor-select-label"
 //               sx={{ color: "#bbb", "&.Mui-focused": { color: "#ff9800" } }}
 //             >
@@ -1388,7 +1450,7 @@ export default Projects;
 //               value={selectedMentor}
 //               label="Select Mentor"
 //               onChange={(e) => setSelectedMentor(e.target.value)}
-//               sx={{ 
+//               sx={{
 //                 color: "#fff",
 //                 "& .MuiOutlinedInput-notchedOutline": { borderColor: "#ff9800" },
 //                 "&:hover .MuiOutlinedInput-notchedOutline": { borderColor: "#ffb74d" },
@@ -1424,19 +1486,19 @@ export default Projects;
 //           </FormControl>
 //         </DialogContent>
 //         <DialogActions sx={{ background: "#1e1e1e", padding: "16px 24px" }}>
-//           <Button 
+//           <Button
 //             onClick={handleModalClose}
-//             sx={{ 
+//             sx={{
 //               color: "#ff9800",
 //               "&:hover": { backgroundColor: "rgba(255, 152, 0, 0.1)" }
 //             }}
 //           >
 //             Cancel
 //           </Button>
-//           <Button 
+//           <Button
 //             onClick={handleConfirmRegistration}
 //             disabled={!selectedMentor || loading.registration}
-//             sx={{ 
+//             sx={{
 //               color: "#ff9800",
 //               "&:hover": { backgroundColor: "rgba(255, 152, 0, 0.1)" },
 //               "&:disabled": { color: "#666" }

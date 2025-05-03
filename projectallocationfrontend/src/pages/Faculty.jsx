@@ -260,7 +260,7 @@
 
 // export default Faculty;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -289,10 +289,12 @@ import PhoneIcon from "@mui/icons-material/Phone"; // Icon for phone
 import ScheduleIcon from "@mui/icons-material/Schedule"; // Icon for office hours
 import AwardIcon from "@mui/icons-material/EmojiEvents"; // Icon for awards
 import { useSelector } from "react-redux"; // Import useSelector
+import axios from "axios";
 
 const Faculty = () => {
   const user = useSelector((state) => state.user.user); // Get user from Redux store
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated); // Check authentication status
+  // const [facultyMembers, setFacultyMembers] = useState();
 
   const [facultyMembers, setFacultyMembers] = useState([
     {
@@ -301,7 +303,8 @@ const Faculty = () => {
       experience: "10 years",
       expertise: ["Java", "Python", "Machine Learning"],
       maxGroups: 5,
-      image: "https://via.placeholder.com/150", // Placeholder image URL
+      image:
+        "https://th.bing.com/th/id/OIP.T1pPhvZD6gun7uIW0vEA5QHaE4?cb=iwc1&rs=1&pid=ImgDetMain",
       bio: "Dr. John Doe is a seasoned professional with over a decade of experience in software development and machine learning. He has published numerous research papers in top-tier conferences.",
       email: "john.doe@example.com",
       phone: "+1 123 456 7890",
@@ -315,7 +318,8 @@ const Faculty = () => {
       experience: "8 years",
       expertise: ["Web Development", "Blockchain", "Cybersecurity"],
       maxGroups: 4,
-      image: "https://via.placeholder.com/150", // Placeholder image URL
+      image:
+        "https://th.bing.com/th/id/OIP.T1pPhvZD6gun7uIW0vEA5QHaE4?cb=iwc1&rs=1&pid=ImgDetMain",
       bio: "Dr. Jane Smith specializes in blockchain technology and cybersecurity. She has led several industry projects and is a frequent speaker at international conferences.",
       email: "jane.smith@example.com",
       phone: "+1 987 654 3210",
@@ -329,7 +333,8 @@ const Faculty = () => {
       experience: "12 years",
       expertise: ["AI", "Data Science", "Cloud Computing"],
       maxGroups: 6,
-      image: "https://via.placeholder.com/150", // Placeholder image URL
+      image:
+        "https://th.bing.com/th/id/OIP.T1pPhvZD6gun7uIW0vEA5QHaE4?cb=iwc1&rs=1&pid=ImgDetMain",
       bio: "Dr. Alice Johnson is a pioneer in AI and data science. She has worked with leading tech companies and has mentored over 100 students in her career.",
       email: "alice.johnson@example.com",
       phone: "+1 555 123 4567",
@@ -343,7 +348,8 @@ const Faculty = () => {
       experience: "7 years",
       expertise: ["Mobile Development", "UI/UX Design", "React Native"],
       maxGroups: 3,
-      image: "https://via.placeholder.com/150", // Placeholder image URL
+      image:
+        "https://th.bing.com/th/id/OIP.T1pPhvZD6gun7uIW0vEA5QHaE4?cb=iwc1&rs=1&pid=ImgDetMain",
       bio: "Dr. Michael Brown is an expert in mobile app development and UI/UX design. He has developed several award-winning apps and is passionate about teaching.",
       email: "michael.brown@example.com",
       phone: "+1 444 555 6666",
@@ -356,6 +362,23 @@ const Faculty = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedFaculty, setSelectedFaculty] = useState(null);
+
+  // useEffect(() => {
+  //   if (!isAuthenticated) return;
+
+  //   console.log("hello");
+  //   // setLoading((prev) => ({ ...prev, faculties: true }));
+
+  //   axios
+  //     .get("http://localhost:8072/faculty")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setFacultyMembers(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching faculties:", error);
+  //     });
+  // }, [isAuthenticated]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -376,7 +399,15 @@ const Faculty = () => {
   );
 
   return (
-    <Box sx={{ background: "#121212", width: "100vw", minHeight: "100vh", paddingTop: "90px", display: "flex" }}>
+    <Box
+      sx={{
+        background: "#121212",
+        width: "100vw",
+        minHeight: "100vh",
+        paddingTop: "90px",
+        display: "flex",
+      }}
+    >
       <Container maxWidth="lg" sx={{ flexGrow: 1, padding: "20px" }}>
         {/* Check if user is authenticated */}
         {isAuthenticated ? (
@@ -411,7 +442,13 @@ const Faculty = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <Card sx={{ background: "#1e1e1e", color: "#fff", height: "100%" }}>
+                    <Card
+                      sx={{
+                        background: "#1e1e1e",
+                        color: "#fff",
+                        height: "100%",
+                      }}
+                    >
                       <CardMedia
                         component="img"
                         height="200"
@@ -419,22 +456,47 @@ const Faculty = () => {
                         alt={faculty.name}
                       />
                       <CardContent>
-                        <Typography variant="h6" sx={{ color: "#ff9800", marginBottom: 2 }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ color: "#ff9800", marginBottom: 2 }}
+                        >
                           {faculty.name}
                         </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 1 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            marginBottom: 1,
+                          }}
+                        >
                           <WorkIcon sx={{ color: "#ff9800" }} />
                           <Typography variant="body2" sx={{ color: "#bbb" }}>
                             <strong>Experience:</strong> {faculty.experience}
                           </Typography>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 1 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            marginBottom: 1,
+                          }}
+                        >
                           <StarIcon sx={{ color: "#ff9800" }} />
                           <Typography variant="body2" sx={{ color: "#bbb" }}>
-                            <strong>Expertise:</strong> {faculty.expertise.join(", ")}
+                            <strong>Expertise:</strong>{" "}
+                            {faculty.expertise.join(", ")}
                           </Typography>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, marginBottom: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            marginBottom: 2,
+                          }}
+                        >
                           <GroupsIcon sx={{ color: "#ff9800" }} />
                           <Typography variant="body2" sx={{ color: "#bbb" }}>
                             <strong>Max Groups:</strong> {faculty.maxGroups}
@@ -442,7 +504,11 @@ const Faculty = () => {
                         </Box>
                         <Button
                           variant="contained"
-                          sx={{ background: "#ff9800", color: "#000", width: "100%" }}
+                          sx={{
+                            background: "#ff9800",
+                            color: "#000",
+                            width: "100%",
+                          }}
                           onClick={() => handleOpenDialog(faculty)}
                         >
                           View Details
@@ -455,8 +521,14 @@ const Faculty = () => {
             </Grid>
 
             {/* Faculty Details Dialog */}
-            <Dialog open={openDialog} onClose={handleCloseDialog} PaperProps={{ sx: { background: "#1e1e1e", color: "#fff" } }}>
-              <DialogTitle sx={{ color: "#ff9800" }}>{selectedFaculty?.name}</DialogTitle>
+            <Dialog
+              open={openDialog}
+              onClose={handleCloseDialog}
+              PaperProps={{ sx: { background: "#1e1e1e", color: "#fff" } }}
+            >
+              <DialogTitle sx={{ color: "#ff9800" }}>
+                {selectedFaculty?.name}
+              </DialogTitle>
               <DialogContent>
                 {selectedFaculty && (
                   <Box>
@@ -467,7 +539,10 @@ const Faculty = () => {
                       alt={selectedFaculty.name}
                       sx={{ borderRadius: "8px", marginBottom: 2 }}
                     />
-                    <Typography variant="body1" sx={{ color: "#fff", marginBottom: 2 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#fff", marginBottom: 2 }}
+                    >
                       <strong>Bio:</strong> {selectedFaculty.bio}
                     </Typography>
                     <List>
@@ -487,10 +562,15 @@ const Faculty = () => {
                         <ListItemIcon>
                           <ScheduleIcon sx={{ color: "#ff9800" }} />
                         </ListItemIcon>
-                        <ListItemText primary={`Office Hours: ${selectedFaculty.officeHours}`} />
+                        <ListItemText
+                          primary={`Office Hours: ${selectedFaculty.officeHours}`}
+                        />
                       </ListItem>
                     </List>
-                    <Typography variant="body1" sx={{ color: "#fff", marginBottom: 2 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#fff", marginBottom: 2 }}
+                    >
                       <strong>Ongoing Projects:</strong>
                     </Typography>
                     <List>
@@ -500,7 +580,10 @@ const Faculty = () => {
                         </ListItem>
                       ))}
                     </List>
-                    <Typography variant="body1" sx={{ color: "#fff", marginBottom: 2 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#fff", marginBottom: 2 }}
+                    >
                       <strong>Awards:</strong>
                     </Typography>
                     <List>
@@ -525,7 +608,10 @@ const Faculty = () => {
           </>
         ) : (
           // Show message if user is not logged in
-          <Typography variant="h5" sx={{ textAlign: "center", color: "red", marginBottom: 2 }}>
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "center", color: "red", marginBottom: 2 }}
+          >
             You are not logged in. Please log in to view faculty details.
           </Typography>
         )}
